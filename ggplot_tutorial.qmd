@@ -4,12 +4,11 @@ author: "Mike Frank, Edited Bria Long"
 date: "Fall 2026"
 format: html
 ---
-  
-This is an exercise on using `ggplot2` that was adapted by Mike Frank
-from the_grammar.R on [http://had.co.nz/ggplot2](); this was adapted for Psych 251 at Stanford and now Psych 201a at UCSD.
 
+This is an exercise on using `ggplot2` that was adapted by Mike Frank from the_grammar.R on [http://had.co.nz/ggplot2](); this was adapted for Psych 251 at Stanford and now Psych 201a at UCSD.
 
 # Install packages
+
 ```{r}
 library(tidyverse)
 library(ggthemes) # allows you to add new color themes
@@ -45,9 +44,9 @@ ggplot(diamonds, aes(x = carat, y = price, shape = clarity, color = cut)) +
 
 # More complex with ggplot
 
-What I want to show off here is the functionality of being able to build up complex plots with multiple elements, one layer at a time. 
+What I want to show off here is the functionality of being able to build up complex plots with multiple elements, one layer at a time.
 
-`ggplot` is the basic call, where you specify A) a dataframe and B) an aesthetic (`aes`) mapping from variables in the plot space to variables in the dataset. 
+`ggplot` is the basic call, where you specify A) a dataframe and B) an aesthetic (`aes`) mapping from variables in the plot space to variables in the dataset.
 
 ```{r}
 p <- ggplot(diamonds, aes(x = carat, y = price)) # first you set the aesthetic and dataset
@@ -59,13 +58,14 @@ p <- p + geom_point(aes(colour = carat)) # and you can keep doing this to add la
 p
 ```
 
-Now you can try writing this as a single set of additions (e.g. one line of R code, though you can put in linebreaks). This is the most common workflow for me. 
-
+Now you can try writing this as a single set of additions (e.g. one line of R code, though you can put in linebreaks). This is the most common workflow for me.
 
 ```{r}
-## Your code here
-```
+p <- ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point(aes(color = carat))
 
+p
+```
 
 # Facets
 
@@ -82,26 +82,41 @@ ggplot(
   geom_point()
 ```
 
-One of the primary benefits of `ggplot2` is the use of facets - also known as small multiples in the Tufte vocabulary. That last plot was probably hard to read. Facets could make it better. Try adding `facet_grid(x ~ y)`.  `x ~ y` means row facets are by `x`, column facets by `y`. 
+One of the primary benefits of `ggplot2` is the use of facets - also known as small multiples in the Tufte vocabulary. That last plot was probably hard to read. Facets could make it better. Try adding `facet_grid(x ~ y)`. `x ~ y` means row facets are by `x`, column facets by `y`.
 
 ```{r}
-## YOUR CODE HERE
+ggplot(
+  diamonds,
+  aes(
+    x = carat, y = price,
+    shape = clarity, color = cut
+  )
+) +
+  geom_point() +
+  facet_grid(.~x)
 ```
 
-But facets can also get overwhelming. Try to strike a good balance between color, shape, and faceting. 
+But facets can also get overwhelming. Try to strike a good balance between color, shape, and faceting.
 
-HINT: `facet_grid(. ~ x)` puts x on the columns, but `facet_wrap(~ x)` (no dot) *wraps* the facets. 
+HINT: `facet_grid(. ~ x)` puts x on the columns, but `facet_wrap(~ x)` (no dot) *wraps* the facets.
 
 ```{r}
-
+ggplot(
+  diamonds,
+  aes(
+    x = carat, y = price,
+    shape = clarity, color = cut
+  )
+) +
+  geom_point() +
+  facet_grid(.~x)
 ```
-
 
 # Geoms
 
-As you've seen above, the basic unit of a ggplot plot is a "geom" - a mapping between data (via an "aesthetic") and a particular geometric configuration on coordinate axes. 
+As you've seen above, the basic unit of a ggplot plot is a "geom" - a mapping between data (via an "aesthetic") and a particular geometric configuration on coordinate axes.
 
-Let's try adding some geoms and manipulating their parameters. One combo I really like is a scatterplot with a smoothing layer (`geom_smooth`). Try adding one onto this plot. 
+Let's try adding some geoms and manipulating their parameters. One combo I really like is a scatterplot with a smoothing layer (`geom_smooth`). Try adding one onto this plot.
 
 ```{r}
 ggplot(diamonds, aes(x = carat, y = price)) +
@@ -109,7 +124,6 @@ ggplot(diamonds, aes(x = carat, y = price)) +
   facet_grid(cut ~ clarity) 
 ## ADD TO THIS PLOT WITH YOUR CODE HERE
 ```
-
 
 CHALLENGE: You could also try starting with a histogram and adding densities. (`geom_density`), Try [this link](https://stackoverflow.com/questions/5688082/ggplot2-overlay-histogram-with-density-curve).
 
@@ -121,13 +135,13 @@ CHALLENGE: You could also try starting with a histogram and adding densities. (`
 
 I like a slightly cleaner look to my plots. Luckily, ggplot allows you to add "themes" to your plots. Try doing the same plot but adding `+ theme_bw()` or `+ theme_classic()`. Different themes work better for different applications, in my experience. My favorite right now is `ggthemes::theme_few`.
 
-You can also try different color scales. Experiment with `scale_color_...` - try writing that and hitting TAB for autocomplete options. Check out the help on this. 
+You can also try different color scales. Experiment with `scale_color_...` - try writing that and hitting TAB for autocomplete options. Check out the help on this.
 
-You can also try transparency/different point sizes to clean up scatterplots. Try `alpha = .1` or `pch = "."` to make transparent or small points. 
+You can also try transparency/different point sizes to clean up scatterplots. Try `alpha = .1` or `pch = "."` to make transparent or small points.
 
-Finally, don't forget to "fix the axis labels"! 
+Finally, don't forget to "fix the axis labels"!
 
-Here's a somewhat ugly plot - see if you can make it look awesome. 
+Here's a somewhat ugly plot - see if you can make it look awesome.
 
 ```{r}
 ggplot(diamonds, aes(
@@ -143,6 +157,3 @@ ggplot(diamonds, aes(
 
 # Change facets, transparency, fix axis labels, etc.
 ```
-
-
-
